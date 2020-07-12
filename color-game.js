@@ -23,44 +23,48 @@ const difficultyButtons = [
   new DifficultyButton(buttonNodes[1], nColorsHard)
 ]
 
-if (colors.length !== nColorsActive) throw new Error('Different number of colors vs. squares')
+init()
 
-colorDisplay.textContent = goalColor
+function init () {
+  if (colors.length !== nColorsActive) throw new Error('Different number of colors vs. squares')
 
-setSquareColors()
+  colorDisplay.textContent = goalColor
 
-squares.forEach(square => {
-  square.addEventListener(
-    'click',
-    function () {
-      const clickedColor = this.style.backgroundColor
-      if (clickedColor === goalColor) {
-        messageDisplay.textContent = 'Correct!'
-        resetButton.textContent = resetAfterWinText
-        setAllToWinningColor(clickedColor)
-      } else {
-        this.style.backgroundColor = bodyColor
-        messageDisplay.textContent = 'Try again'
+  setSquareColors()
+
+  squares.forEach(square => {
+    square.addEventListener(
+      'click',
+      function () {
+        const clickedColor = this.style.backgroundColor
+        if (clickedColor === goalColor) {
+          messageDisplay.textContent = 'Correct!'
+          resetButton.textContent = resetAfterWinText
+          setAllToWinningColor(clickedColor)
+        } else {
+          this.style.backgroundColor = bodyColor
+          messageDisplay.textContent = 'Try again'
+        }
       }
-    }
-  )
-})
+    )
+  })
 
-resetButton.textContent = resetGiveUpText
+  resetButton.textContent = resetGiveUpText
 
-resetButton.addEventListener('click', resetGame)
+  resetButton.addEventListener('click', resetGame)
 
-difficultyButtons.forEach(button => {
-  button.node.addEventListener(
-    'click',
-    function () {
-      button.activate()
-      difficultyButtons.forEach(other => {
-        if (other.nColors !== nColorsActive) other.deactivate()
-      })
-    }
-  )
-})
+  difficultyButtons.forEach(button => {
+    button.node.addEventListener(
+      'click',
+      function () {
+        button.activate()
+        difficultyButtons.forEach(other => {
+          if (other.nColors !== nColorsActive) other.deactivate()
+        })
+      }
+    )
+  })
+}
 
 function setAllToWinningColor (color) {
   squares.forEach(square => { square.style.backgroundColor = color })
